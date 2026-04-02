@@ -1,0 +1,434 @@
+version: '3.4'
+services:
+  metad0:
+    image: docker.io/vesoft/nebula-metad:v3.6.0
+    environment:
+      USER: root
+      TZ: "America/New_York"
+    command:
+      - --meta_server_addrs=metad0:9559,metad1:9559,metad2:9559
+      - --local_ip=metad0
+      - --ws_ip=metad0
+      - --port=9559
+      - --ws_http_port=19559
+      - --data_path=/data/meta
+      - --log_dir=/logs
+      - --v=0
+      - --minloglevel=0
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://metad0:19559/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    ports:
+      - "9559:9559"
+      - "19559:19559"
+    volumes:
+      - ./data/meta0:/data/meta
+      - ./logs/meta0:/logs
+    networks:
+      - nebula-net
+    restart: on-failure
+    cap_add:
+      - SYS_PTRACE
+
+  metad1:
+    image: docker.io/vesoft/nebula-metad:v3.6.0
+    environment:
+      USER: root
+      TZ: "America/New_York"
+    command:
+      - --meta_server_addrs=metad0:9559,metad1:9559,metad2:9559
+      - --local_ip=metad1
+      - --ws_ip=metad1
+      - --port=9559
+      - --ws_http_port=19559
+      - --data_path=/data/meta
+      - --log_dir=/logs
+      - --v=0
+      - --minloglevel=0
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://metad1:19559/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    ports:
+      - "9560:9559"
+      - "19560:19559"
+    volumes:
+      - ./data/meta1:/data/meta
+      - ./logs/meta1:/logs
+    networks:
+      - nebula-net
+    restart: on-failure
+    cap_add:
+      - SYS_PTRACE
+
+  metad2:
+    image: docker.io/vesoft/nebula-metad:v3.6.0
+    environment:
+      USER: root
+      TZ: "America/New_York"
+    command:
+      - --meta_server_addrs=metad0:9559,metad1:9559,metad2:9559
+      - --local_ip=metad2
+      - --ws_ip=metad2
+      - --port=9559
+      - --ws_http_port=19559
+      - --data_path=/data/meta
+      - --log_dir=/logs
+      - --v=0
+      - --minloglevel=0
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://metad2:19559/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    ports:
+      - "9561:9559"
+      - "19561:19559"
+    volumes:
+      - ./data/meta2:/data/meta
+      - ./logs/meta2:/logs
+    networks:
+      - nebula-net
+    restart: on-failure
+    cap_add:
+      - SYS_PTRACE
+
+  storaged0:
+    image: docker.io/vesoft/nebula-storaged:v3.6.0
+    environment:
+      USER: root
+      TZ: "America/New_York"
+    command:
+      - --meta_server_addrs=metad0:9559,metad1:9559,metad2:9559
+      - --local_ip=storaged0
+      - --ws_ip=storaged0
+      - --port=9779
+      - --ws_http_port=19779
+      - --data_path=/data/storage
+      - --log_dir=/logs
+      - --v=0
+      - --minloglevel=0
+    depends_on:
+      - metad0
+      - metad1
+      - metad2
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://storaged0:19779/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    ports:
+      - "9779:9779"
+      - "19779:19779"
+    volumes:
+      - ./data/storage0:/data/storage
+      - ./logs/storage0:/logs
+    networks:
+      - nebula-net
+    restart: on-failure
+    cap_add:
+      - SYS_PTRACE
+
+  storaged1:
+    image: docker.io/vesoft/nebula-storaged:v3.6.0
+    environment:
+      USER: root
+      TZ: "America/New_York"
+    command:
+      - --meta_server_addrs=metad0:9559,metad1:9559,metad2:9559
+      - --local_ip=storaged1
+      - --ws_ip=storaged1
+      - --port=9779
+      - --ws_http_port=19779
+      - --data_path=/data/storage
+      - --log_dir=/logs
+      - --v=0
+      - --minloglevel=0
+    depends_on:
+      - metad0
+      - metad1
+      - metad2
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://storaged1:19779/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    ports:
+      - "9780:9779"
+      - "19780:19779"
+    volumes:
+      - ./data/storage1:/data/storage
+      - ./logs/storage1:/logs
+    networks:
+      - nebula-net
+    restart: on-failure
+    cap_add:
+      - SYS_PTRACE
+
+  storaged2:
+    image: docker.io/vesoft/nebula-storaged:v3.6.0
+    environment:
+      USER: root
+      TZ: "America/New_York"
+    command:
+      - --meta_server_addrs=metad0:9559,metad1:9559,metad2:9559
+      - --local_ip=storaged2
+      - --ws_ip=storaged2
+      - --port=9779
+      - --ws_http_port=19779
+      - --data_path=/data/storage
+      - --log_dir=/logs
+      - --v=0
+      - --minloglevel=0
+    depends_on:
+      - metad0
+      - metad1
+      - metad2
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://storaged2:19779/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    ports:
+      - "9781:9779"
+      - "19781:19779"
+    volumes:
+      - ./data/storage2:/data/storage
+      - ./logs/storage2:/logs
+    networks:
+      - nebula-net
+    restart: on-failure
+    cap_add:
+      - SYS_PTRACE
+
+  storaged3:
+    image: docker.io/vesoft/nebula-storaged:v3.6.0
+    environment:
+      USER: root
+      TZ: "America/New_York"
+    command:
+      - --meta_server_addrs=metad0:9559,metad1:9559,metad2:9559
+      - --local_ip=storaged3
+      - --ws_ip=storaged3
+      - --port=9779
+      - --ws_http_port=19779
+      - --data_path=/data/storage
+      - --log_dir=/logs
+      - --v=0
+      - --minloglevel=0
+    depends_on:
+      - metad0
+      - metad1
+      - metad2
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://storaged3:19779/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    ports:
+      - "9782:9779"
+      - "19782:19779"
+    volumes:
+      - ./data/storage3:/data/storage
+      - ./logs/storage3:/logs
+    networks:
+      - nebula-net
+    restart: on-failure
+    cap_add:
+      - SYS_PTRACE
+
+  storaged4:
+    image: docker.io/vesoft/nebula-storaged:v3.6.0
+    environment:
+      USER: root
+      TZ: "America/New_York"
+    command:
+      - --meta_server_addrs=metad0:9559,metad1:9559,metad2:9559
+      - --local_ip=storaged4
+      - --ws_ip=storaged4
+      - --port=9779
+      - --ws_http_port=19779
+      - --data_path=/data/storage
+      - --log_dir=/logs
+      - --v=0
+      - --minloglevel=0
+    depends_on:
+      - metad0
+      - metad1
+      - metad2
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://storaged4:19779/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    ports:
+      - "9783:9779"
+      - "19783:19779"
+    volumes:
+      - ./data/storage4:/data/storage
+      - ./logs/storage4:/logs
+    networks:
+      - nebula-net
+    restart: on-failure
+    cap_add:
+      - SYS_PTRACE
+
+  storaged5:
+    image: docker.io/vesoft/nebula-storaged:v3.6.0
+    container_name: storaged5
+    environment:
+      USER: root
+      TZ: "America/New_York"
+    command:
+      - --meta_server_addrs=metad0:9559,metad1:9559,metad2:9559
+      - --local_ip=storaged5
+      - --ws_ip=storaged5
+      - --port=9779
+      - --ws_http_port=19779
+      - --data_path=/data/storage
+      - --log_dir=/logs
+      - --v=0
+      - --minloglevel=0
+    depends_on:
+      - metad0
+      - metad1
+      - metad2
+    ports:
+      - "9784:9779"
+      - "19784:19779"
+    volumes:
+      - ./data/storage5:/data/storage
+      - ./logs/storage5:/logs
+    networks:
+      - nebula-net
+    restart: on-failure
+    cap_add:
+      - SYS_PTRACE
+
+    
+
+
+  graphd0:
+    image: docker.io/vesoft/nebula-graphd:v3.6.0
+    environment:
+      USER: root
+      TZ: "America/New_York"
+    command:
+      - --meta_server_addrs=metad0:9559,metad1:9559,metad2:9559
+      - --port=9669
+      - --local_ip=graphd0
+      - --ws_ip=graphd0
+      - --ws_http_port=19669
+      - --log_dir=/logs
+      - --v=0
+      - --minloglevel=0
+    depends_on:
+      - storaged0
+      - storaged1
+      - storaged2
+      - storaged3
+      - storaged4
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://graphd0:19669/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    ports:
+      - "9669:9669"
+      - "19669:19669"
+    volumes:
+      - ./logs/graph0:/logs
+    networks:
+      - nebula-net
+    restart: on-failure
+    cap_add:
+      - SYS_PTRACE
+
+  graphd1:
+    image: docker.io/vesoft/nebula-graphd:v3.6.0
+    environment:
+      USER: root
+      TZ: "America/New_York"
+    command:
+      - --meta_server_addrs=metad0:9559,metad1:9559,metad2:9559
+      - --port=9669
+      - --local_ip=graphd1
+      - --ws_ip=graphd1
+      - --ws_http_port=19669
+      - --log_dir=/logs
+      - --v=0
+      - --minloglevel=0
+    depends_on:
+      - storaged0
+      - storaged1
+      - storaged2
+      - storaged3
+      - storaged4
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://graphd1:19669/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    ports:
+      - "9670:9669"
+      - "19670:19669"
+    volumes:
+      - ./logs/graph1:/logs
+    networks:
+      - nebula-net
+    restart: on-failure
+    cap_add:
+      - SYS_PTRACE
+  
+  console:
+    image: vesoft/nebula-console:v3.4.0
+    entrypoint: ""
+    command: 
+      - sh
+      - -c
+      - |
+        for i in `seq 1 60`;do
+          var=`nebula-console -addr graphd0 -port 9669 -u root -p nebula -e 'ADD HOSTS "storaged0":9779,"storaged1":9779,"storaged2":9779,"storaged3":9779,"storaged4":9779'`;
+          if [[ $$? == 0 ]];then
+            break;
+          fi;
+          sleep 1;
+          echo "retry to add hosts.";
+        done && tail -f /dev/null;
+    depends_on:
+      - graphd0
+      - graphd1
+    networks:
+      - nebula-net
+
+  studio:
+    image: vesoft/nebula-graph-studio:v3
+    container_name: nebula-studio
+    environment:
+      USER: root
+      PASSWORD: nebula
+      NEBULA_ADDRESS: "graphd0:9669"
+      STUDIO_ENDPOINT: "http://0.0.0.0:7001"
+    ports:
+      - "7001:7001"
+    depends_on:
+      - graphd0
+    networks:
+      - nebula-net
+    restart: on-failure
+
+networks:
+  nebula-net:
